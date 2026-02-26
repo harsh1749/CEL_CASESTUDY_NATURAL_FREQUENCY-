@@ -1,0 +1,70 @@
+clc;
+clear;
+close all;
+% Given Example Values
+
+m1 = 4;      % kg
+m2 = 2;      % kg
+
+k1 = 2000;   % N/m
+k2 = 3000;   % N/m
+k3 = 1000;   % N/m
+% Mass Matrix [M]
+M = [m1 0;
+     0  m2];
+% Stiffness Matrix [K]
+
+K = [k1+k2  -k2;
+     -k2    k2+k3];
+% Solve Eigenvalue Problem
+
+[V,D] = eig(K,M);
+
+lambda = diag(D);          % Eigenvalues
+omega = sqrt(lambda);      % Natural frequency (rad/s)
+f = omega/(2*pi);          % Natural frequency (Hz)
+
+% Sort values (Mode 1 -> Mode 2)
+[omega, idx] = sort(omega);
+f = f(idx);
+V = V(:,idx);
+
+% Display Results
+
+disp('================================');
+disp('Natural Frequencies (rad/s):');
+disp(omega);
+
+disp('Natural Frequencies (Hz):');
+disp(f);
+disp('================================');
+
+% Expected approx:
+% omega1 ≈ 21.73 rad/s
+% omega2 ≈ 45.98 rad/s
+% f1 ≈ 3.46 Hz
+% f2 ≈ 7.32 Hz
+% GRAPH 1: Natural Frequency vs Mode Number
+figure;
+plot(1:2, f, 'o-', 'LineWidth', 2);
+grid on;
+xlabel('Mode Number');
+ylabel('Natural Frequency (Hz)');
+title('Natural Frequency vs Mode Number');
+
+% GRAPH 2: Smooth Vibration Curve (Time Response)
+% x(t) = Phi*sin(wt)
+t = 0:0.001:2;   % Time (seconds)
+x1 = V(1,1)*sin(omega(1)*t) + V(1,2)*sin(omega(2)*t);
+x2 = V(2,1)*sin(omega(1)*t) + V(2,2)*sin(omega(2)*t);
+figure;
+plot(t, x1, 'b', 'LineWidth', 2);
+hold on;
+plot(t, x2, 'r', 'LineWidth', 2);
+grid on;
+
+xlabel('Time (seconds)');
+ylabel('Displacement');
+title('Vibration Response of 2-DOF System');
+legend('Mass m1','Mass m2');
+
