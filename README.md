@@ -89,4 +89,4 @@ Computational Vibration Analysis Project
 Project Summary
 This project successfully demonstrates how natural frequencies of a spring–mass system can be determined using matrix eigenvalue methods in MATLAB.
 It reinforces the importance of vibration analysis, computational modeling, and eigenvalue techniques in modern engineering system design.
-# CEL_CASESTUDY_NATURAL_FREQUENCY-
+
